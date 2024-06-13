@@ -13,7 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 @WebServlet("/UploadDocumentsServlet")
-@MultipartConfig(maxFileSize = 16177215)  // Max file size 15MB
+@MultipartConfig(maxFileSize = 16177215)   
 public class UploadDocumentsServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

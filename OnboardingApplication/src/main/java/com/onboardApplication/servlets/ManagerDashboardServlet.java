@@ -129,7 +129,10 @@ public class ManagerDashboardServlet extends HttpServlet {
         statement.setInt(2, technicalSkill);
         statement.setInt(3, communicationSkill);
         statement.executeUpdate();
+
+    
     }
 
-   
+    
 }
+

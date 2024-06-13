@@ -5,11 +5,16 @@
 <html>
 <head>
     <title>Employee Dashboard</title>
+    <link rel="stylesheet" href="employeeDashboard.css">
 </head>
 <body>
 <%
     String name = (String) request.getAttribute("username");
     Boolean isApproved = (Boolean) request.getAttribute("isApproved");
+    
+    Integer employeeId = (Integer) session.getAttribute("employee_id");
+    String employeeName = (String) session.getAttribute("employee_name");
+    
     if (name == null) {
         response.sendRedirect("Login.jsp");
         return;
@@ -51,9 +56,15 @@
     <%
         if (isApproved != null && !isApproved) {
     %>
-        <form action="UploadDocumentsServlet" method="post" enctype="multipart/form-data">
+         <form action="UploadDocumentsServlet" method="post" enctype="multipart/form-data">
             <h3>Upload Your Documents</h3>
+            <input type="hidden" name="employee_id" value="<%= employeeId %>">
+     
+             Employee Name : <input type="text" name="employee_name" required><br>
+            Phone Number: <input type="text" name="phone_num" required><br>
+            Aadhar Number: <input type="text" name="aadhar_num" required><br>
             Aadhar Card: <input type="file" name="aadhar_img" required><br>
+            PAN Number: <input type="text" name="pan_num" required><br>
             PAN Card: <input type="file" name="pan_img" required><br>
             Marksheet: <input type="file" name="marksheet" required><br>
             Resume: <input type="file" name="resume" required><br>

@@ -5,7 +5,7 @@
 <html>
 <head>
     <title>Manager Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="managerDashboard.css">
 </head>
 <body>
     <h2>Welcome, <%= session.getAttribute("username") %></h2>

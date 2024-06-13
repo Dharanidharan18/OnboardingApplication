@@ -33,6 +33,8 @@ public class HRDashboardServlet extends HttpServlet {
                 registerEmployee(conn, request);
             } else if ("assignProject".equals(action)) {
                 assignProject(conn, request);
+            } else if ("approveDocuments".equals(action)) {
+                approveDocuments(conn, request);
             }
             conn.close();
         } catch (Exception e) {
@@ -55,8 +57,12 @@ public class HRDashboardServlet extends HttpServlet {
             Connection conn = getConnection();
             List<Employee> employees = getEmployees(conn);
             List<Employee> managers = getManagers(conn);
+            List<DocumentApproval> pendingDocumentApprovals = getPendingDocumentApprovals(conn);
+            System.out.println(pendingDocumentApprovals.toString());
+            System.out.println(employees.toString());
             request.setAttribute("employees", employees);
             request.setAttribute("managers", managers);
+            request.setAttribute("pendingDocumentApprovals", pendingDocumentApprovals);
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -136,7 +142,7 @@ public class HRDashboardServlet extends HttpServlet {
     }
 
     private List<DocumentApproval> getPendingDocumentApprovals(Connection conn) throws SQLException {
-        String sql = "SELECT ed.employee_id, u.employee_name, ed.phone_num, ed.aadhar_num, ed.pan_num " +
+        String sql = "SELECT ed.employee_id, u.employee_name, ed.phone_num, ed.aadhar_num, ed.pan_num,ed.aadhar_img,ed.pan_img,ed.marksheet,ed.resume " +
                      "FROM employee_details ed " +
                      "JOIN users u ON ed.employee_id = u.employee_id " +
                      "WHERE ed.is_approved = FALSE";
@@ -150,9 +156,12 @@ public class HRDashboardServlet extends HttpServlet {
             String phoneNum = resultSet.getString("phone_num");
             String aadharNum = resultSet.getString("aadhar_num");
             String panNum = resultSet.getString("pan_num");
-            documentApprovals.add(new DocumentApproval(employeeId, employeeName, phoneNum, aadharNum, panNum));
+            Blob aadharImg = resultSet.getBlob("aadhar_img");
+            Blob panImg = resultSet.getBlob("pan_img");
+            Blob marksheet = resultSet.getBlob("marksheet");
+            Blob resume = resultSet.getBlob("resume");
+            documentApprovals.add(new DocumentApproval(employeeId, employeeName, phoneNum, aadharNum, panNum, aadharImg, panImg, marksheet, resume));
         }
         return documentApprovals;
     }
-    
 }

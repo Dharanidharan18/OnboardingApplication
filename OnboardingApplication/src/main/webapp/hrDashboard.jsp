@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.*" %>
+<%@ page import="java.sql.Blob" %>
 <%@ page import="com.onboardApplication.java.Employee" %>
 <%@ page import="com.onboardApplication.java.DocumentApproval" %>
 <!DOCTYPE html>
@@ -7,9 +8,9 @@
 
 <head>
     <title>HR Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="hrDashboard.css">
 </head>
-<body>
+<body> 
     <h2>Welcome, <%= session.getAttribute("username") %></h2>
 
     <h3>Register New Employee</h3>
@@ -72,10 +73,14 @@
             <th>Phone Number</th>
             <th>Aadhar Number</th>
             <th>PAN Number</th>
+            <th>Aadhar Card</th>
+            <th>PAN Card</th>
+            <th>Marksheet</th>
+            <th>Resume</th>
             <th>Action</th>
         </tr>
         <%
-            List<DocumentApproval> documentApprovals = (List<DocumentApproval>) request.getAttribute("documentApprovals");
+            List<DocumentApproval> documentApprovals = (List<DocumentApproval>) request.getAttribute("pendingDocumentApprovals");
             if (documentApprovals != null) {
                 for (DocumentApproval approval : documentApprovals) {
         %>
@@ -85,6 +90,17 @@
             <td><%= approval.getPhoneNum() %></td>
             <td><%= approval.getAadharNum() %></td>
             <td><%= approval.getPanNum() %></td>
+            <td>
+                <img src="data:image/jpeg;base64,<%= convertBlobToBase64(approval.getAadharImg()) %>" alt="Aadhar Image" width="100" height="100"/>
+            </td>
+            <td>
+                <img src="data:image/jpeg;base64,<%= convertBlobToBase64(approval.getPanImg()) %>" alt="PAN Image" width="100" height="100"/>
+            </td>
+            <td>
+                <img src="data:image/jpeg;base64,<%= convertBlobToBase64(approval.getMarksheet()) %>" alt="Marksheet" width="100" height="100"/>
+            </td>
+            <td>
+                <a href="data:application/pdf;base64,<%= convertBlobToBase64(approval.getResume()) %>" target="_blank">View Resume</a>            </td>
             <td>
                 <form action="HRDashboardServlet" method="post" style="display:inline;">
                     <input type="hidden" name="action" value="approveDocuments">
@@ -99,7 +115,22 @@
         %>
     </table>
 
-    <a href="LogoutServlet">Logout</a>
-    
+    <a  class = "logout" href="LogoutServlet">Logout</a>
+
 </body>
 </html>
+
+<%! 
+    private String convertBlobToBase64(Blob blob) {
+        String base64Image = "";
+        try {
+            if (blob != null) {
+                byte[] bytes = blob.getBytes(1, (int) blob.length());
+                base64Image = Base64.getEncoder().encodeToString(bytes);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return base64Image;
+    }
+%>
