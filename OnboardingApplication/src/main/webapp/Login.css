@@ -27,7 +27,6 @@ body {
 .login-box {
     position: absolute;
     width: 400px;
-    /* background: red; */
 }
 
 .login-box form {
@@ -83,6 +82,7 @@ h2 {
     padding: 0 6px;
     color: #0ef;
 }
+
 .btn {
     width: 100%;
     height: 45px;
@@ -96,3 +96,16 @@ h2 {
     font-weight: 600;
 }
 
+.error {
+    color: red;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9em;
+    background: #fdd;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #f99;
+    width: calc(100% - 100px);
+    margin-left: auto;
+    margin-right: auto;
+}

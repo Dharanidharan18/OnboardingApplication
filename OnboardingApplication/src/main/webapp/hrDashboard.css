@@ -7,18 +7,42 @@ body {
     background-color: #f4f4f4;
 }
 
-h2, h3 {
-    color: #333;
-    text-align: center;
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-form {
-    width: 60%;
-    margin: 20px auto;
+header {
+    text-align: center;
+    background-color: #007bff;
+    color: white;
+    padding: 20px 0;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.section {
+    background: white;
     padding: 20px;
-    /* background: #fff; */
     border-radius: 10px;
-    /* box-shadow: 0 0 10px rgba(0,0,0,0.1); */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
+}
+
+.section h3 {
+    margin-top: 0;
+    color: #333;
 }
 
 form label {
@@ -29,10 +53,8 @@ form label {
 form input[type="text"],
 form input[type="email"],
 form input[type="password"],
-form input[type="datetime-local"],
-form textarea,
 form select {
-    width: calc(100% - 22px);
+    width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -55,12 +77,9 @@ form input[type="submit"]:hover {
 }
 
 table {
-    width: 90%;
-    margin: 20px auto;
+    width: 100%;
     border-collapse: collapse;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
 }
 
 table th, table td {
@@ -102,20 +121,20 @@ table input[type="submit"] {
     color: white;
     font-size: 14px;
     cursor: pointer;
-    position: relative;
-  left: -7%;  
 }
 
 table input[type="submit"]:hover {
     background: #218838;
 }
 
-.logout {
-    display: block;
-    width: 100px;
-    margin: 20px auto;
-    padding: 10px;
+footer {
     text-align: center;
+    margin: 20px 0;
+}
+
+.logout {
+    display: inline-block;
+    padding: 10px 20px;
     background: #dc3545;
     color: white;
     border-radius: 5px;

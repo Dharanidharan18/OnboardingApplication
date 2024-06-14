@@ -2,7 +2,6 @@ package com.onboardApplication.servlets;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.onboardingApplication.util.OnboardingApplicationDB;
+
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -21,8 +22,7 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        try {
-            Connection conn = getConnection();
+        try (Connection conn = OnboardingApplicationDB.getConnection()) {
             String sql = "SELECT role FROM users WHERE username = ? AND password = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, username);
@@ -50,22 +50,10 @@ public class LoginServlet extends HttpServlet {
                         break;
                 }
             } else {
-                response.sendRedirect("Login.jsp?error=Invalid username or password");
+                response.sendRedirect("Login.jsp?error=1");
             }
-
-            conn.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-    	
-    	Class.forName("com.mysql.cj.jdbc.Driver");
-        String jdbcURL = "jdbc:mysql://localhost:3306/onboarding_application";
-        String dbUser = "root";
-        String dbPassword = "root";
-        return DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
-    }
 }
-
-

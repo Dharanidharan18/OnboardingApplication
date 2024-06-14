@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import com.onboardApplication.java.Employee;
+import com.onboardingApplication.util.OnboardingApplicationDB;
 
 @WebServlet("/ManagerDashboardServlet")
 public class ManagerDashboardServlet extends HttpServlet {
@@ -24,7 +25,7 @@ public class ManagerDashboardServlet extends HttpServlet {
         }
 
         try {
-            Connection conn = getConnection();
+            Connection conn = OnboardingApplicationDB.getConnection();
             int managerId = getManagerId(conn, username);
             List<Employee> assignedEmployees = getAssignedEmployees(conn, managerId);
             request.setAttribute("assignedEmployees", assignedEmployees);
@@ -49,7 +50,7 @@ public class ManagerDashboardServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         try {
-            Connection conn = getConnection();
+            Connection conn = OnboardingApplicationDB.getConnection();
             if ("assignTask".equals(action)) {
                 assignTask(conn, request);
             } else if ("approveTask".equals(action)) {
@@ -65,14 +66,7 @@ public class ManagerDashboardServlet extends HttpServlet {
         doGet(request, response);
     }
 
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        String jdbcURL = "jdbc:mysql://localhost:3306/onboarding_application";
-        String dbUser = "root";
-        String dbPassword = "root";
-        return DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
-    }
-
+    
     private int getManagerId(Connection conn, String username) throws SQLException {
         String sql = "SELECT employee_id FROM users WHERE username = ?";
         PreparedStatement statement = conn.prepareStatement(sql);

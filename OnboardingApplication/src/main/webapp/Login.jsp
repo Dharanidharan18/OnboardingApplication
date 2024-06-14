@@ -27,6 +27,13 @@
                 <button type="submit" class="btn">Login</button>
                 
             </form>
+            
+             <%
+            String error = request.getParameter("error");
+            if ("1".equals(error)) {
+                out.println("<div class='error'>Invalid User ID or Password. Please try again.</div>");
+            }
+        %>
         </div>
 
        

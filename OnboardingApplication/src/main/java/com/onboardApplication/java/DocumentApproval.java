@@ -13,7 +13,7 @@ public class DocumentApproval {
     private Blob marksheet;
     private Blob resume;
 
-    // Constructor
+    
     public DocumentApproval(int employeeId, String employeeName, String phoneNum, String aadharNum, String panNum, Blob aadharImg, Blob panImg, Blob marksheet, Blob resume) {
         this.employeeId = employeeId;
         this.employeeName = employeeName;
@@ -26,7 +26,11 @@ public class DocumentApproval {
         this.resume = resume;
     }
 
-    // Getters and Setters for each field
+    public DocumentApproval(int documentId, String documentName, int employeeId2) {
+		
+	}
+
+	
     public int getEmployeeId() {
         return employeeId;
     }

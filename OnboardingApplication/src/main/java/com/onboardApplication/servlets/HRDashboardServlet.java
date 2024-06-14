@@ -11,6 +11,7 @@ import javax.servlet.http.*;
 
 import com.onboardApplication.java.DocumentApproval;
 import com.onboardApplication.java.Employee;
+import com.onboardingApplication.util.OnboardingApplicationDB;
 
 @WebServlet("/HRDashboardServlet")
 public class HRDashboardServlet extends HttpServlet {
@@ -28,7 +29,7 @@ public class HRDashboardServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         try {
-            Connection conn = getConnection();
+            Connection conn = OnboardingApplicationDB.getConnection();
             if ("registerEmployee".equals(action)) {
                 registerEmployee(conn, request);
             } else if ("assignProject".equals(action)) {
@@ -54,7 +55,7 @@ public class HRDashboardServlet extends HttpServlet {
         }
 
         try {
-            Connection conn = getConnection();
+            Connection conn = OnboardingApplicationDB.getConnection();
             List<Employee> employees = getEmployees(conn);
             List<Employee> managers = getManagers(conn);
             List<DocumentApproval> pendingDocumentApprovals = getPendingDocumentApprovals(conn);
@@ -71,14 +72,7 @@ public class HRDashboardServlet extends HttpServlet {
         request.getRequestDispatcher("hrDashboard.jsp").forward(request, response);
     }
 
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        String jdbcURL = "jdbc:mysql://localhost:3306/onboarding_application";
-        String dbUser = "root";
-        String dbPassword = "root";
-        return DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
-    }
-
+   
     private void registerEmployee(Connection conn, HttpServletRequest request) throws SQLException {
         String name = request.getParameter("employee_name");
         String email = request.getParameter("email");

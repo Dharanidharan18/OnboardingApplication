@@ -6,6 +6,18 @@
 <head>
     <title>Manager Dashboard</title>
     <link rel="stylesheet" href="managerDashboard.css">
+    <script>
+        function validateTaskForm() {
+            const dueDate = new Date(document.getElementById("dueDate").value);
+            const now = new Date();
+            
+            if (dueDate <= now) {
+                alert("Due date must be a upcoming date");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 <body>
     <h2>Welcome, <%= session.getAttribute("username") %></h2>
@@ -32,7 +44,7 @@
     </table>
 
     <h3>Assign Task to Employee</h3>
-    <form action="ManagerDashboardServlet" method="post">
+    <form action="ManagerDashboardServlet" method="post" onsubmit="return validateTaskForm()">
         <input type="hidden" name="action" value="assignTask">
         <label for="employeeId">Employee ID:</label>
         <input type="text" id="employeeId" name="employeeId" required><br>
@@ -63,6 +75,6 @@
         <input type="submit" value="Evaluate Employee">
     </form>
 
-   <a href="LogoutServlet">Logout</a>
+    <a href="LogoutServlet">Logout</a>
 </body>
 </html>

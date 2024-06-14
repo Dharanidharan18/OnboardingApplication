@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import com.onboardApplication.java.Task;
+import com.onboardingApplication.util.OnboardingApplicationDB;
 
 @WebServlet("/EmployeeDashboardServlet")
 public class EmployeeDashboardServlet extends HttpServlet {
@@ -23,10 +24,7 @@ public class EmployeeDashboardServlet extends HttpServlet {
             return;
         }
 
-        try {
-            Connection conn = getConnection();
-
-            // Get employee tasks
+        try (Connection conn = OnboardingApplicationDB.getConnection()) {
             String sql = "SELECT t.task_id, t.task, t.status, t.due_date FROM tasks t JOIN users u ON t.employee_id = u.employee_id WHERE u.username = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, username);
@@ -42,7 +40,6 @@ public class EmployeeDashboardServlet extends HttpServlet {
                 tasks.add(task);
             }
 
-            // Check if the documents are approved
             String checkApprovalSql = "SELECT is_approved FROM employee_details ed JOIN users u ON ed.employee_id = u.employee_id WHERE u.username = ?";
             PreparedStatement checkApprovalStatement = conn.prepareStatement(checkApprovalSql);
             checkApprovalStatement.setString(1, username);
@@ -56,19 +53,9 @@ public class EmployeeDashboardServlet extends HttpServlet {
             request.setAttribute("username", username);
             request.setAttribute("isApproved", isApproved);
             request.getRequestDispatcher("employeeDashboard.jsp").forward(request, response);
-
-            conn.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while processing your request.");
         }
-    }
-
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        String jdbcURL = "jdbc:mysql://localhost:3306/onboarding_application";
-        String dbUser = "root";
-        String dbPassword = "root";
-        return DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
     }
 }
