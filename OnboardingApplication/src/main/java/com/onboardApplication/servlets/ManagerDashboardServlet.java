@@ -28,6 +28,13 @@ public class ManagerDashboardServlet extends HttpServlet {
             Connection conn = OnboardingApplicationDB.getConnection();
             int managerId = getManagerId(conn, username);
             List<Employee> assignedEmployees = getAssignedEmployees(conn, managerId);
+            
+            // Check if managerId is valid (assigned manager)
+            if (managerId != -1) {
+                List<Employee> employeesOnBench = getEmployeesOnBench(conn, managerId); // Fetch employees on bench for this manager
+                request.setAttribute("employeesOnBench", employeesOnBench); // Set attribute for JSP
+            }
+            
             request.setAttribute("assignedEmployees", assignedEmployees);
             
             conn.close();
@@ -123,10 +130,30 @@ public class ManagerDashboardServlet extends HttpServlet {
         statement.setInt(2, technicalSkill);
         statement.setInt(3, communicationSkill);
         statement.executeUpdate();
-
-    
     }
-
     
-}
+    private List<Employee> getEmployeesOnBench(Connection conn, int managerId) throws SQLException {
+        String sql = "SELECT u.employee_id, u.employee_name, b.start_date, b.end_date, b.certification_type, b.completion_of_certification " +
+                     "FROM users u " +
+                     "JOIN bench b ON u.employee_id = b.employee_id " +
+                     "WHERE EXISTS (SELECT 1 FROM project_assignments pa WHERE u.employee_id = pa.employee_id AND pa.manager_id = ?)";
+        PreparedStatement statement = conn.prepareStatement(sql);
+        statement.setInt(1, managerId);
+        ResultSet resultSet = statement.executeQuery();
 
+        List<Employee> employeesOnBench = new ArrayList<>();
+        while (resultSet.next()) {
+            int employeeId = resultSet.getInt("employee_id");
+            String employeeName = resultSet.getString("employee_name");
+            Date startDate = resultSet.getDate("start_date");
+            Date endDate = resultSet.getDate("end_date");
+            String certificationType = resultSet.getString("certification_type");
+            String completionOfCertification = resultSet.getString("completion_of_certification");
+
+            // Create Employee object and add to list
+            Employee employee = new Employee(employeeId, employeeName, startDate, endDate, certificationType, completionOfCertification);
+            employeesOnBench.add(employee);
+        }
+        return employeesOnBench;
+    }
+}

@@ -6,18 +6,6 @@
 <head>
     <title>Manager Dashboard</title>
     <link rel="stylesheet" href="managerDashboard.css">
-    <script>
-        function validateTaskForm() {
-            const dueDate = new Date(document.getElementById("dueDate").value);
-            const now = new Date();
-            
-            if (dueDate <= now) {
-                alert("Due date must be a upcoming date");
-                return false;
-            }
-            return true;
-        }
-    </script>
 </head>
 <body>
     <h2>Welcome, <%= session.getAttribute("username") %></h2>
@@ -36,6 +24,35 @@
         <tr>
             <td><%= employee.getId() %></td>
             <td><%= employee.getName() %></td>
+        </tr>
+        <%
+                }
+            }
+        %>
+    </table>
+
+    <h3>Employees on Bench</h3>
+    <table border="1">
+        <tr>
+            <th>Employee ID</th>
+            <th>Employee Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Certification Type</th>
+            <th>Completion of Certification</th>
+        </tr>
+        <%
+            List<Employee> employeesOnBench = (List<Employee>) request.getAttribute("employeesOnBench");
+            if (employeesOnBench != null) {
+                for (Employee employee : employeesOnBench) {
+        %>
+        <tr>
+            <td><%= employee.getId() %></td>
+            <td><%= employee.getName() %></td>
+            <td><%= employee.getStartDate() != null ? employee.getStartDate() : "" %></td>
+            <td><%= employee.getEndDate() != null ? employee.getEndDate() : "" %></td>
+            <td><%= employee.getCertificationType() != null ? employee.getCertificationType() : "" %></td>
+            <td><%= employee.getCompletionOfCertification() %></td>
         </tr>
         <%
                 }

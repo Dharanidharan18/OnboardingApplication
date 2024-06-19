@@ -1,11 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.*" %>
-<%@ page import="java.sql.Blob" %>
-<%@ page import="com.onboardApplication.java.Employee" %>
-<%@ page import="com.onboardApplication.java.DocumentApproval" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, java.sql.Blob, com.onboardApplication.java.Employee, com.onboardApplication.java.DocumentApproval"%>
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>HR Dashboard</title>
     <link rel="stylesheet" href="hrDashboard.css">
 </head>
@@ -143,7 +141,7 @@
 </body>
 </html>
 
-<%! 
+<%!
     private String convertBlobToBase64(Blob blob) {
         String base64Image = "";
         try {
