@@ -52,7 +52,7 @@ public class EmployeeDashboardServlet extends HttpServlet {
             request.setAttribute("tasks", tasks);
             request.setAttribute("username", username);
             request.setAttribute("isApproved", isApproved);
-            request.getRequestDispatcher("employeeDashboard.jsp").forward(request, response);
+            request.getRequestDispatcher("empdash.jsp").forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while processing your request.");

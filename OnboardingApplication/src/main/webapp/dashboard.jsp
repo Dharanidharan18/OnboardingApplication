@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
-    <title>Manager Dashboard</title>
+    <title>HR Dashboard</title>
     <style>
         .content-section {
             display: none;
